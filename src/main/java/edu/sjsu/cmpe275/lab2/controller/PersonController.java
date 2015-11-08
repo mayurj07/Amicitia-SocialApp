@@ -87,10 +87,10 @@ public class PersonController {
     @RequestMapping(value = "/{id}",
                     method = RequestMethod.GET,
                     produces = {"application/xml", "application/json", "text/html"})
-    public Person getPersonInfo(@PathVariable(value = "id") int personId, ModelMap model) throws EntityNotFound {
+    public String getPersonInfo(@PathVariable(value = "id") int personId, ModelMap model) throws EntityNotFound {
         Person person = personService.getPersonInfo(personId);
         model.addAttribute("person",person);
-        return new Person();
+        return "person";
     }
 
 
