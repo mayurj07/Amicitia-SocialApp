@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -46,7 +47,8 @@ public class PersonController {
                                @RequestParam(value = "city", defaultValue = "") String city,
                                @RequestParam(value = "state", defaultValue = "state") String state,
                                @RequestParam(value = "zip", defaultValue = "") String zip,
-                               @RequestParam(value = "organization", defaultValue = "") String orgid ) throws Exception {
+                               @RequestParam(value = "organization", defaultValue = "") String orgid,
+                               ModelMap model) throws Exception {
 
 
         Person personObj = new Person();
@@ -69,7 +71,7 @@ public class PersonController {
 
         addressObj.setCity(city);
         addressObj.setState(state);
-        addressObj.setState(state);
+        addressObj.setStreet(street);
         addressObj.setZip(zip);
         personObj.setAddress(addressObj);
 
@@ -82,9 +84,8 @@ public class PersonController {
             personObj.setOrg(null);
         }
         personService.createPerson(personObj);
-
+        model.addAttribute("person", personObj);
         return personObj;
-
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {

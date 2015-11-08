@@ -14,7 +14,10 @@ public class Address {
 	
 	@Column(name="state")
 	private String state;
-	
+
+    @Column(name="zip")
+    private String zip;
+
 	public String getStreet() {
 		return street;
 	}
@@ -46,7 +49,4 @@ public class Address {
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
-
-	@Column(name="zip")
-	private String zip;
 }
