@@ -11,7 +11,8 @@ public class OrganizationDaoImpl extends AbstractDao<Integer, Organization> impl
 	public Organization findById(int id) {
 		return getByKey(id);
 	}
-	
+
+
 	public Organization saveOrganization(Organization org)
 	{	int id=0;
 		Organization objOrg=null;
