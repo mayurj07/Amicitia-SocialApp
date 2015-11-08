@@ -100,6 +100,14 @@
 			<version>${springframework.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+      <!--Gson Library to convert object to/from json-->
+      <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>1.7.1</version>
+      </dependency>
+
   </dependencies>
   <build>
   <pluginManagement>

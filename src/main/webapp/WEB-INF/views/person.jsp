@@ -23,6 +23,7 @@
 </style>
 <table style="width:100%">
     <tr>
+        <td>ID</td>
         <td>First Name</td>
         <td>Last Name</td>
         <td>Email</td>
@@ -33,9 +34,11 @@
         <td>Zip</td>
         <td>Organization Id</td>
         <td>Organization Name</td>
-
     </tr>
     <tr>
+        <td>
+            ${person.id}
+        </td>
         <td>
             ${person.firstname}
         </td>

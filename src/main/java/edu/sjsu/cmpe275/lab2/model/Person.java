@@ -29,7 +29,7 @@ public class Person {
     @JoinColumn(name = "orgId")
     private Organization org;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "friendship",
             joinColumns = {@JoinColumn(name = "person1", referencedColumnName = "id")},

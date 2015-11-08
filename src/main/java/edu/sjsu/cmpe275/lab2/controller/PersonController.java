@@ -1,6 +1,7 @@
 package edu.sjsu.cmpe275.lab2.controller;
 
 
+import com.google.gson.Gson;
 import edu.sjsu.cmpe275.lab2.exception.EntityNotFound;
 import edu.sjsu.cmpe275.lab2.model.*;
 import edu.sjsu.cmpe275.lab2.service.OrganizationService;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -54,7 +58,7 @@ public class PersonController {
         Person personObj = new Person();
         Address addressObj = new Address();
         Organization orgObj = null;
-
+        List<Person> friendList = new ArrayList<Person>();
 
         if (firstname == null || "".equalsIgnoreCase(firstname)
                 || lastname == null || "".equalsIgnoreCase(lastname)
@@ -73,6 +77,8 @@ public class PersonController {
         addressObj.setZip(zip);
         personObj.setAddress(addressObj);
 
+        personObj.setFriends(friendList);
+
         orgObj = orgService.findById(Integer.parseInt(orgid));
         if (orgObj != null) {
             personObj.setOrg(orgObj);
@@ -89,9 +95,54 @@ public class PersonController {
                     produces = {"application/xml", "application/json", "text/html"})
     public String getPersonInfo(@PathVariable(value = "id") int personId, ModelMap model) throws EntityNotFound {
         Person person = personService.getPersonInfo(personId);
-        model.addAttribute("person",person);
-        return "person";
+
+        Gson gson = new Gson();
+        String person_JSON = gson.toJson(person);
+        //model.addAttribute("person",person);
+        //return "person";
+
+        model.addAttribute("person",person_JSON);
+        System.out.println(person_JSON);
+        return "personJSON";
     }
+
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
+    public ResponseEntity getOrganizationInformation(
+            @PathVariable("id") String id) {
+        try {
+            Organization organization = this.organizationService.getOrganization(id);
+            if (organization != null)
+                return new ResponseEntity<>(organization, HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @Configuration
+    @EnableWebMvc
+    public class WebConfig extends WebMvcConfigurerAdapter {
+
+        @Resource
+        private Environment env;
+
+        /**
+         * Override default web configuration like media type, accept header, etc.
+         */
+        @Override
+        public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+            configurer.favorPathExtension(false).
+                    favorParameter(true).
+                    ignoreAcceptHeader(true).
+                    useJaf(false).
+                    defaultContentType(MediaType.APPLICATION_JSON).
+                    mediaType("json", MediaType.APPLICATION_JSON).
+                    mediaType("xml", MediaType.APPLICATION_XML).
+                    mediaType("html", MediaType.TEXT_HTML);
+        }}
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
