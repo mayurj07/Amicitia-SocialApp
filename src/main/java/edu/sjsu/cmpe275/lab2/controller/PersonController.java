@@ -107,7 +107,7 @@ public class PersonController {
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
+ /*   @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
     public ResponseEntity getOrganizationInformation(
             @PathVariable("id") String id) {
         try {
@@ -129,9 +129,9 @@ public class PersonController {
         @Resource
         private Environment env;
 
-        /**
+        *//**
          * Override default web configuration like media type, accept header, etc.
-         */
+         *//*
         @Override
         public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
             configurer.favorPathExtension(false).
@@ -142,15 +142,15 @@ public class PersonController {
                     mediaType("json", MediaType.APPLICATION_JSON).
                     mediaType("xml", MediaType.APPLICATION_XML).
                     mediaType("html", MediaType.TEXT_HTML);
-        }}
+        }}*/
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public Person updatePersonInfo(
-            @PathVariable int personId,
+    public String updatePersonInfo(
+            @PathVariable(value = "id") int personId,
             @RequestParam(value = "firstname", defaultValue = "") String firstname,
             @RequestParam(value = "lastname", defaultValue = "") String lastname,
-            @RequestParam(value = "email", defaultValue = "") String email,
+            @RequestParam(value = "email", required = true) String email,
             @RequestParam(value = "description", defaultValue = "") String description,
             @RequestParam(value = "street", defaultValue = "") String street,
             @RequestParam(value = "city", defaultValue = "") String city,
@@ -159,6 +159,7 @@ public class PersonController {
             @RequestParam(value = "id", defaultValue = "") int orgId,
             ModelMap model) throws Exception {
 
+            System.out.println("personId:    " +personId);
             Person person = personService.getPersonInfo(personId);
             Address address = new Address();
 
@@ -167,36 +168,37 @@ public class PersonController {
                         throw new Exception("Unable to find Person Id....");
              		}
 
-        if (firstname == null || "".equalsIgnoreCase(firstname)
+       /* if (firstname == null || "".equalsIgnoreCase(firstname)
                 || lastname == null || "".equalsIgnoreCase(lastname)
                 || email == null || "".equalsIgnoreCase(email) || description == null || "".equalsIgnoreCase(description)
                 || street == null || "".equalsIgnoreCase(street) || city == null || "".equalsIgnoreCase(city)
                 || state == null || "".equalsIgnoreCase(state) || zip == null || "".equalsIgnoreCase(zip)) {
 
             return person;
-        }
+        }*/
 
-        if(firstname != null && !firstname.isEmpty())
+        if(firstname != null && "".equalsIgnoreCase(firstname))
               person.setFirstname(firstname);
-        if (lastname != null && !lastname.isEmpty())
+        if (lastname != null && "".equalsIgnoreCase(lastname))
               person.setLastname(lastname);
-        if(email != null && !email.isEmpty())
+        if(email != null && "".equalsIgnoreCase(email))
               person.setEmail(email);
-        if (description != null && !description.isEmpty())
+        if (description != null && "".equalsIgnoreCase(description))
               person.setDescription(description);
-        if(street != null && !street.isEmpty())
+        if(street != null && "".equalsIgnoreCase(street))
             address.setStreet(street);
-        if (city != null && !city.isEmpty())
+        if (city != null && "".equalsIgnoreCase(city))
             address.setCity(city);
-        if(state != null && !state.isEmpty())
+        if(state != null && "".equalsIgnoreCase(state))
                     address.setState(state);
-        if (zip != null && !zip.isEmpty())
+        if (zip != null && "".equalsIgnoreCase(zip))
                     address.setZip(zip);
 
 //        person.setOrg(org);
 
-        personService.updatePersonInfo(person);
-        return person;
+        Person updatedPerson = personService.updatePersonInfo(person);
+        model.addAttribute("person", updatedPerson);
+        return "person";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
