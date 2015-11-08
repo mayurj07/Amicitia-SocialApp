@@ -97,30 +97,52 @@ public class PersonController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Person updatePersonInfo(
             @PathVariable int personId,
-            @RequestParam(value = "firstname", required = true) String firstName,
-            @RequestParam(value = "lastName", required = true) String lastName,
-            @RequestParam(value = "email", required = true) String email,
-            @RequestParam(value = "description", required = false) String description,
-            @RequestParam(value = "street", required = false) String street,
-            @RequestParam(value = "city", required = false) String city,
-            @RequestParam(value = "state", required = false) String state,
-            @RequestParam(value = "zip", required = false) String zip,
-            @RequestParam(value = "id", required = false) int orgId) throws EntityNotFound {
+            @RequestParam(value = "firstname", defaultValue = "") String firstname,
+            @RequestParam(value = "lastname", defaultValue = "") String lastname,
+            @RequestParam(value = "email", defaultValue = "") String email,
+            @RequestParam(value = "description", defaultValue = "") String description,
+            @RequestParam(value = "street", defaultValue = "") String street,
+            @RequestParam(value = "city", defaultValue = "") String city,
+            @RequestParam(value = "state", defaultValue = "") String state,
+            @RequestParam(value = "zip", defaultValue = "") String zip,
+            @RequestParam(value = "id", defaultValue = "") int orgId,
+            ModelMap model) throws Exception {
 
-        Address address = new Address();
-        address.setCity(city);
-        address.setState(state);
-        address.setStreet(street);
-        address.setZip(zip);
-        Organization org = new Organization();
-        org.setId(orgId);
-        Person person = new Person();
-        person.setFirstname(firstName);
-        person.setLastname(lastName);
-        person.setEmail(email);
-        person.setDescription(description);
-        person.setAddress(address);
-        person.setOrg(org);
+            Person person = personService.getPersonInfo(personId);
+            Address address = new Address();
+
+        if(person == null )
+             		{
+                        throw new Exception("Unable to find Person Id....");
+             		}
+
+        if (firstname == null || "".equalsIgnoreCase(firstname)
+                || lastname == null || "".equalsIgnoreCase(lastname)
+                || email == null || "".equalsIgnoreCase(email) || description == null || "".equalsIgnoreCase(description)
+                || street == null || "".equalsIgnoreCase(street) || city == null || "".equalsIgnoreCase(city)
+                || state == null || "".equalsIgnoreCase(state) || zip == null || "".equalsIgnoreCase(zip)) {
+
+            return person;
+        }
+
+        if(firstname != null && !firstname.isEmpty())
+              person.setFirstname(firstname);
+        if (lastname != null && !lastname.isEmpty())
+              person.setLastname(lastname);
+        if(email != null && !email.isEmpty())
+              person.setEmail(email);
+        if (description != null && !description.isEmpty())
+              person.setDescription(description);
+        if(street != null && !street.isEmpty())
+            address.setStreet(street);
+        if (city != null && !city.isEmpty())
+            address.setCity(city);
+        if(state != null && !state.isEmpty())
+                    address.setState(state);
+        if (zip != null && !zip.isEmpty())
+                    address.setZip(zip);
+
+//        person.setOrg(org);
 
         personService.updatePersonInfo(person);
         return person;
