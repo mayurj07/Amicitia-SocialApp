@@ -56,11 +56,9 @@ public class PersonController {
         Organization orgObj = null;
 
 
-        if(firstname == null || "".equalsIgnoreCase(firstname)
+        if (firstname == null || "".equalsIgnoreCase(firstname)
                 || lastname == null || "".equalsIgnoreCase(lastname)
-                || email == null || "".equalsIgnoreCase(email))
-        {
-//            return new ResponseEntity<Person>(personObj, HttpStatus.BAD_REQUEST);
+                || email == null || "".equalsIgnoreCase(email)) {
             throw new Exception("required");
         }
 
@@ -76,11 +74,9 @@ public class PersonController {
         personObj.setAddress(addressObj);
 
         orgObj = orgService.findById(Integer.parseInt(orgid));
-        if(orgObj != null){
+        if (orgObj != null) {
             personObj.setOrg(orgObj);
-        }
-        else
-        {
+        } else {
             personObj.setOrg(null);
         }
         personService.createPerson(personObj);
@@ -88,12 +84,15 @@ public class PersonController {
         return personObj;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {
-            "application/xml", "application/json"})
-    public Person getPersonInfo(@PathVariable int personId) throws EntityNotFound {
-        personService.getPersonInfo(personId);
+    @RequestMapping(value = "/{id}",
+                    method = RequestMethod.GET,
+                    produces = {"application/xml", "application/json", "text/html"})
+    public Person getPersonInfo(@PathVariable(value = "id") int personId, ModelMap model) throws EntityNotFound {
+        Person person = personService.getPersonInfo(personId);
+        model.addAttribute("person",person);
         return new Person();
     }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Person updatePersonInfo(
