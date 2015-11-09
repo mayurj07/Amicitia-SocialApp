@@ -13,6 +13,7 @@ public class ApplicationInit implements WebApplicationInitializer{
 		// TODO Auto-generated method stub
 		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
 		ctx.register(ApplicationConfig.class);
+        ctx.register(ResponseTypeConfig.class);
 		ctx.setServletContext(serCon);
 
 		ServletRegistration.Dynamic servlet = serCon.addServlet("DispatcherServlet", new DispatcherServlet(ctx));
