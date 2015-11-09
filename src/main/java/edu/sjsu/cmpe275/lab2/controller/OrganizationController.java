@@ -23,10 +23,13 @@ public class OrganizationController {
     @Autowired
     private OrganizationService organizationService;
 
-
     /**
-     * GET organization in HTML format by ID
-     * */
+     * GET organization by ID in HTML format
+     *
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"text/html"})
     public String getOrganizationHTML(@PathVariable("id") int id, ModelMap model) {
         Organization orgn = organizationService.findById(id);
@@ -35,8 +38,12 @@ public class OrganizationController {
     }
 
     /**
-     * GET organization in JSON/XML format by ID
-     * */
+     * GET organization by ID in JSON/XML format
+     *
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
     public ResponseEntity<Organization> getOrganization(@PathVariable("id") int id, ModelMap model) {
         Organization orgObj = organizationService.findById(id);
@@ -48,9 +55,16 @@ public class OrganizationController {
         return new ResponseEntity<Organization>(orgObj, HttpStatus.OK);
     }
 
-    /**
+     /**
      * Create an Organization
-     * */
+     * @param name
+     * @param description
+     * @param state
+     * @param city
+     * @param street
+     * @param zip
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Organization> createOrganization(@RequestParam(value = "name", required = true) String name,
                                                            @RequestParam(value = "description", defaultValue = "") String description,
@@ -74,7 +88,11 @@ public class OrganizationController {
     }
 
     /**
-     * Delete Organization*/
+     * Delete an Organization
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = {"/{id}"}, method = RequestMethod.DELETE)
     public ResponseEntity<Organization> deleteOrganization(@PathVariable int id) throws Exception {
 
@@ -96,6 +114,15 @@ public class OrganizationController {
 
     /**
      * Update an Organization
+     *
+     * @param id
+     * @param name
+     * @param description
+     * @param state
+     * @param city
+     * @param street
+     * @param zip
+     * @return
      */
     @RequestMapping(value = {"/{id}"}, method = RequestMethod.POST)
     public ResponseEntity<Organization> updateOrganization(@PathVariable("id") int id,

@@ -2,9 +2,11 @@
 
 CMPE 275 Lab - 2
 
-Name: Mayur Jain
-Student ID: 009991059
-Email: mayurj07@gmail.com
+Team 22 :
+
+Member1 : Mayur Jain | 009991059 | mayurj07@gmail.com
+Member2 : Akanksha Singh | 010030839 | akanksha.singh@sjsu.edu,
+Member3 : Harkirat Singh | 010027823 | harkirat.singh@sjsu.edu
 
 Note: This assignment was created using IntelliJ IDEA IDE.
 
