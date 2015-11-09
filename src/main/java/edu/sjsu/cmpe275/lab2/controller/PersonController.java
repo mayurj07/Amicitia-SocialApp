@@ -31,20 +31,6 @@ public class PersonController {
     @Autowired
     OrganizationService orgService;
 
-   /* @RequestMapping(value = "/greeting", produces = {"application/xml", "application/json"})
-    @ResponseBody
-    public Person greeting(
-            @RequestParam(value = "name", required = false, defaultValue = "World") String name,
-            Model model) {
-        Person person = new Person();
-        model.addAttribute("person", person);
-        return person;
-    }*/
-
-   /* @RequestMapping(value = "/greeting", method = RequestMethod.POST)
-    public String htmlView(@RequestParam(value = "name") String name, Model model) {
-        return "person";
-    }*/
 
     @RequestMapping(method = RequestMethod.POST)
     public Person createPerson(@RequestParam(value = "firstname", required = true) String firstname,
@@ -96,57 +82,27 @@ public class PersonController {
 
     @RequestMapping(value = "/{id}",
                     method = RequestMethod.GET,
-                    produces = {"application/xml", "application/json", "text/html"})
-    public String getPersonInfo(@PathVariable(value = "id") int personId, ModelMap model) throws EntityNotFound {
+                    produces = {"text/html"})
+    public String getPersonHTML(@PathVariable(value = "id") int personId, ModelMap model) throws EntityNotFound {
         Person person = personService.getPersonInfo(personId);
-
-        Gson gson = new Gson();
-        String person_JSON = gson.toJson(person);
-        //model.addAttribute("person",person);
-        //return "person";
-
-        model.addAttribute("person",person_JSON);
-        System.out.println(person_JSON);
-        return "personJSON";
+        model.addAttribute("person",person);
+        return "person";
     }
 
-
- /*   @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
-    public ResponseEntity getOrganizationInformation(
-            @PathVariable("id") String id) {
-        try {
-            Organization organization = this.organizationService.getOrganization(id);
-            if (organization != null)
-                return new ResponseEntity<>(organization, HttpStatus.OK);
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.GET,
+            produces = {"application/json", "application/xml"})
+    public ResponseEntity<Person> getPerson(@PathVariable(value = "id") int personId) throws EntityNotFound {
+        try{
+            Person person = personService.getPersonInfo(personId);
+            if(person != null)
+                return new ResponseEntity<Person>(person, HttpStatus.OK);
             else
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
         }
     }
-
-
-    @Configuration
-    @EnableWebMvc
-    public class WebConfig extends WebMvcConfigurerAdapter {
-
-        @Resource
-        private Environment env;
-
-        *//**
-         * Override default web configuration like media type, accept header, etc.
-         *//*
-        @Override
-        public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-            configurer.favorPathExtension(false).
-                    favorParameter(true).
-                    ignoreAcceptHeader(true).
-                    useJaf(false).
-                    defaultContentType(MediaType.APPLICATION_JSON).
-                    mediaType("json", MediaType.APPLICATION_JSON).
-                    mediaType("xml", MediaType.APPLICATION_XML).
-                    mediaType("html", MediaType.TEXT_HTML);
-        }}*/
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
