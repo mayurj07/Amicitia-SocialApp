@@ -18,21 +18,46 @@ public class OrganizationServiceImpl implements OrganizationService{
 
     @Autowired
     private PersonDAO personDAO;
-	
+
+	/**
+	 * Get Organization object based on ID
+	 *
+	 * @param id
+	 * @return
+     */
 	public Organization findById(int id) {
 		return organizationDao.findById(id);
 	}
-	
+
+	/**
+	 * Save Organization Object
+	 *
+	 * @param org
+	 * @return
+     */
 	public Organization saveOrganization(Organization org)
 	{	
 		return organizationDao.saveOrganization(org);
 	}
-	
+
+	/**
+	 * Update Organization Object
+	 *
+	 * @param orgn
+	 * @return
+     */
 	public Organization updateOrganization(Organization orgn) {
 		Organization orgRet = organizationDao.updateOrganization(orgn);
 		return orgRet;
 	}
-	
+
+	/**
+	 * Delete Organization object
+	 *
+	 * @param id
+	 * @return
+	 * @throws Exception
+     */
 	public Organization deleteOrganizationbyId(int id) throws Exception
 	{
         Boolean personExists = personDAO.organizationExists(id);
