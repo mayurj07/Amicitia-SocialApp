@@ -60,5 +60,5 @@ Maven must be installed.
 ```
 
 ###Application Tests Screenshots
-
+https://github.com/mayurj07/Amicitia-SocialApp/files/30435/ScreenShots.pdf
 
