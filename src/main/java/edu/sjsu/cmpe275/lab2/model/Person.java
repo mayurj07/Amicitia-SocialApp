@@ -1,8 +1,16 @@
 package edu.sjsu.cmpe275.lab2.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
+
+
+@XmlSeeAlso(value = {Organization.class, Address.class})
+@XmlRootElement(name ="person")
 @Entity
 @Table(name = "person")
 public class Person {
@@ -29,6 +37,7 @@ public class Person {
     @JoinColumn(name = "orgId")
     private Organization org;
 
+    @XmlTransient
     @Transient
     private List<Integer> friends;
 
@@ -38,6 +47,7 @@ public class Person {
      *
      * @return
      */
+    @XmlElement(name = "id")
     public long getId() {
         return id;
     }
@@ -167,5 +177,14 @@ public class Person {
     public void setFriendsDetails(List<Integer> friends) {
         this.friends = friends;
     }
+
+    public List<Integer> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<Integer> friends) {
+        this.friends = friends;
+    }
+
 
 }

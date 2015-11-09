@@ -62,7 +62,7 @@ public class PersonController {
         Person personObj = new Person();
         Address addressObj = new Address();
         Organization orgObj = null;
-        List<Person> friendList = new ArrayList<Person>();
+        List<Integer> friendList = new ArrayList<Integer>();
 
         if (firstname == null || "".equalsIgnoreCase(firstname)
                 || lastname == null || "".equalsIgnoreCase(lastname)
