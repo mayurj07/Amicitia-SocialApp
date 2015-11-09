@@ -2,8 +2,6 @@
 
 ##A set of REST APIs to manage entities and relationships in a social app.
 
-Team 22 :
-
 #####Member1 : Mayur Jain     | mayurj07@gmail.com
 #####Member2 : Akanksha Singh | akanksha.singh@sjsu.edu
 #####Member3 : Harkirat Singh | harkirat.singh@sjsu.edu
