@@ -7,7 +7,7 @@
 #####Member3 : Harkirat Singh | harkirat.singh@sjsu.edu
 #####Member4 : Surbhi Garg    | garg.surbhi90@gmail.com
 
-Note: This assignment was created using IntelliJ IDEA IDE.
+Note: This project was created using IntelliJ IDEA IDE.
 
 ###How the project is build:
 1) Select spring maven project.
