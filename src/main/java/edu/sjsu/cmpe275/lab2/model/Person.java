@@ -29,13 +29,8 @@ public class Person {
     @JoinColumn(name = "orgId")
     private Organization org;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "friendship",
-            joinColumns = {@JoinColumn(name = "person1", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "person2", referencedColumnName = "id")}
-            )
-    private List<Person> friends;
+    @Transient
+    private List<Integer> friends;
 
 
     public long getId() {
@@ -86,11 +81,11 @@ public class Person {
         this.address = address;
     }
 
-    public List<Person> getFriends() {
+    public List<Integer> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<Person> friends) {
+    public void setFriends(List<Integer> friends) {
         this.friends = friends;
     }
 
@@ -101,4 +96,13 @@ public class Person {
     public void setOrg(Organization org) {
         this.org = org;
     }
+
+    public List<Integer> getFriendsDetails() {
+        return friends;
+    }
+
+    public void setFriendsDetails(List<Integer> friends) {
+        this.friends = friends;
+    }
+
 }
