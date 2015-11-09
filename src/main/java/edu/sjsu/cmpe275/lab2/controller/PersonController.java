@@ -2,10 +2,14 @@ package edu.sjsu.cmpe275.lab2.controller;
 
 
 import com.google.gson.Gson;
+import edu.sjsu.cmpe275.lab2.dao.OrganizationDao;
 import edu.sjsu.cmpe275.lab2.exception.EntityNotFound;
+import edu.sjsu.cmpe275.lab2.exception.OrganizationNotFoundException;
 import edu.sjsu.cmpe275.lab2.model.*;
+import edu.sjsu.cmpe275.lab2.model.Organization;
 import edu.sjsu.cmpe275.lab2.service.OrganizationService;
 import edu.sjsu.cmpe275.lab2.service.PersonService;
+import edu.sjsu.cmpe275.lab2.dao.PersonDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -161,7 +165,9 @@ public class PersonController {
 
             System.out.println("personId:    " +personId);
             Person person = personService.getPersonInfo(personId);
-            Address address = new Address();
+            Organization org = new Organization();
+
+
 
         if(person == null )
              		{
@@ -176,28 +182,44 @@ public class PersonController {
 
             return person;
         }*/
+//        Person per = personService.getPersonInfo(personId);
+//        Person entity = personDao.getPersonInfo((int) updatedPerson.getId());
+//          Person per = personService.getPersonInfo((int) updatePersonInfo)
 
-        if(firstname != null && "".equalsIgnoreCase(firstname))
-              person.setFirstname(firstname);
-        if (lastname != null && "".equalsIgnoreCase(lastname))
-              person.setLastname(lastname);
-        if(email != null && "".equalsIgnoreCase(email))
-              person.setEmail(email);
-        if (description != null && "".equalsIgnoreCase(description))
-              person.setDescription(description);
-        if(street != null && "".equalsIgnoreCase(street))
-            address.setStreet(street);
-        if (city != null && "".equalsIgnoreCase(city))
-            address.setCity(city);
-        if(state != null && "".equalsIgnoreCase(state))
-                    address.setState(state);
-        if (zip != null && "".equalsIgnoreCase(zip))
-                    address.setZip(zip);
 
-//        person.setOrg(org);
+         else {
 
-        Person updatedPerson = personService.updatePersonInfo(person);
-        model.addAttribute("person", updatedPerson);
+
+            Address address = person.getAddress();
+            person.setEmail(email);
+            if (firstname != null && "".equalsIgnoreCase(firstname))
+                person.setFirstname(firstname);
+            if (lastname != null && "".equalsIgnoreCase(lastname))
+                person.setLastname(lastname);
+            if (email != null && "".equalsIgnoreCase(email))
+                person.setEmail(email);
+            if (description != null && "".equalsIgnoreCase(description))
+                person.setDescription(description);
+            if (street != null && "".equalsIgnoreCase(street))
+                address.setStreet(street);
+            if (city != null && "".equalsIgnoreCase(city))
+                address.setCity(city);
+            if (state != null && "".equalsIgnoreCase(state))
+                address.setState(state);
+            if (zip != null && "".equalsIgnoreCase(zip))
+                address.setZip(zip);
+
+
+
+//            Organization orgObj = this.organizationService.findById(orgId);
+            		if(orgService==null) throw new OrganizationNotFoundException(" organization ");
+            else  {
+                        person.setOrg(org);
+                    }
+
+            Person updatedPerson = personService.updatePersonInfo(person);
+            model.addAttribute("person", updatedPerson);
+        }
         return "person";
     }
 
