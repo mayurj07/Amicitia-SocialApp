@@ -1,5 +1,6 @@
 package edu.sjsu.cmpe275.lab2.service;
 
+import edu.sjsu.cmpe275.lab2.dao.PersonDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,28 +15,34 @@ public class OrganizationServiceImpl implements OrganizationService{
 	
 	@Autowired
 	private OrganizationDao organizationDao;
+
+    @Autowired
+    private PersonDAO personDAO;
 	
 	public Organization findById(int id) {
-		// TODO Auto-generated method stub
-		System.out.println(" ::: in serviec class:::"+id);
-		
 		return organizationDao.findById(id);
 	}
 	
 	public Organization saveOrganization(Organization org)
 	{	
-		System.out.println("::: in the save organization:::");
 		return organizationDao.saveOrganization(org);
 	}
 	
 	public Organization updateOrganization(Organization orgn) {
-		
 		Organization orgRet = organizationDao.updateOrganization(orgn);
 		return orgRet;
 	}
 	
-	public void deleteOrganizationbyId(int id)
+	public Organization deleteOrganizationbyId(int id) throws Exception
 	{
-		organizationDao.deleteOrganizationById(id);
+        Boolean personExists = personDAO.organizationExists(id);
+        System.out.println(personExists);
+        if(personExists){
+            throw new Exception("Cannot delete Org as person still exists in Org ");
+        }
+        else {
+            Organization organization = organizationDao.deleteOrganizationById(id);
+            return organization;
+        }
 	}
 }

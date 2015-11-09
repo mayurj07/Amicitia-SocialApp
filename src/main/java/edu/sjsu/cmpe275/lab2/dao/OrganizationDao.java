@@ -8,8 +8,8 @@ public interface OrganizationDao {
 	
 	Organization saveOrganization(Organization org);
 	
-	void deleteOrganizationById(int id);
+	Organization deleteOrganizationById(int id);
 	
 	Organization updateOrganization(Organization org);
-	
+
 }

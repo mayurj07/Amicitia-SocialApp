@@ -7,6 +7,8 @@ import edu.sjsu.cmpe275.lab2.model.Organization;
 import edu.sjsu.cmpe275.lab2.service.OrganizationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,99 +17,123 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/org")
 public class OrganizationController {
-	
-	@Autowired
-	private OrganizationService organizationService;
-	
-	@RequestMapping(value="org/{id}", method=RequestMethod.GET)
-	public String getOrganization(@PathVariable("id") int id,ModelMap model)
-	{	
-		System.out.println(" is is ::::::::::"+id);
-		//Integer itentifier = Integer.valueOf(id);
-		
-		Organization orgn = organizationService.findById(id);
-		System.out.println(" :::::::;;; test:is controller: "+orgn.getName());
-		model.addAttribute("organization",orgn);
-		return "allemployees";
-	}
-	
-	@RequestMapping(value={"org"}, method=RequestMethod.POST)
-	public String createOrganization(@RequestParam(value = "name",required=true) String name,
-									 @RequestParam(value = "description", defaultValue = "") String description,
-									 @RequestParam(value = "state",defaultValue = "") String state,
-									 @RequestParam(value= "city",defaultValue = "") String city,
-									 @RequestParam(value = "street", defaultValue = "") String street,
-									 @RequestParam(value = "zip", defaultValue = "") String zip,
-									 ModelMap model)
-	{	
-		Address address = new Address();
-		address.setCity(city);
-		address.setState(state);
-		address.setStreet(street);
-		address.setZip(zip);
-		System.out.println("::: in controller :: "+address.getState()+" "+address.getCity());
-		
-		Organization objectOrg = new Organization();
-		objectOrg.setName(name);
-		objectOrg.setDescription(description);
-		objectOrg.setAddress(address);
-		
-		System.out.println("::: in controller :: "+objectOrg.getName()+" "+objectOrg.getDescription());
-		Organization result = organizationService.saveOrganization(objectOrg);
-		model.addAttribute("result",result);
-		return "success";
-	}
-	
-	@RequestMapping(value = { "org/{id}" }, method = RequestMethod.DELETE)
-	public String deleteOrganization(@PathVariable int id) {
-		organizationService.deleteOrganizationbyId(id);
-		return "success";
-	}
-	
-	@RequestMapping(value={"org/{id}"},method=RequestMethod.POST)
-	public String updateOrganization(@PathVariable("id") int id,
-			 @RequestParam(value = "name",required=true) String name,
-			 @RequestParam(value = "description", defaultValue = "") String description,
-			 @RequestParam(value = "state",defaultValue = "") String state,
-			 @RequestParam(value= "city",defaultValue = "") String city,
-			 @RequestParam(value = "street", defaultValue = "") String street,
-			 @RequestParam(value = "zip", defaultValue = "") String zip,
-			 ModelMap model)
-	{	
-		// get the organization with the given id
-		Organization org  = organizationService.findById(id);
-		if(org==null)
-			System.out.println(" no record with this id found ");
-		else
-		{
-			System.out.println(" setting the update records");
-			Address address = org.getAddress();
-			org.setName(name);
-			if(state != null && !state.isEmpty())
-				address.setState(state);
-			if(city != null && !city.isEmpty())
-				address.setCity(city);
-			if(zip != null && !zip.isEmpty())
-				address.setZip(zip);
-			if(street != null && !street.isEmpty())
-				address.setStreet(street);
-			if(description != null && !description.isEmpty())
-				org.setDescription(description);
-			
-		
-		organizationService.updateOrganization(org);
-		System.out.println(" ::::::::organization name is :::::"+org.getName());
-		}
-		return "success";
-		
-	}
-	
-	
-	private void validateOrganization(int orgId) {
-		Organization orgObj = this.organizationService.findById(orgId);
-		if(orgObj==null) throw new OrganizationNotFoundException(" organization ");
-	}
-	
+
+    @Autowired
+    private OrganizationService organizationService;
+
+
+    /**
+     * GET organization in HTML format by ID
+     * */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"text/html"})
+    public String getOrganizationHTML(@PathVariable("id") int id, ModelMap model) {
+        Organization orgn = organizationService.findById(id);
+        model.addAttribute("org", orgn);
+        return "organization";
+    }
+
+    /**
+     * GET organization in JSON/XML format by ID
+     * */
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
+    public ResponseEntity<Organization> getOrganization(@PathVariable("id") int id, ModelMap model) {
+        Organization orgObj = organizationService.findById(id);
+
+        if (orgObj == null) {
+            return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Organization>(orgObj, HttpStatus.OK);
+    }
+
+    /**
+     * Create an Organization
+     * */
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Organization> createOrganization(@RequestParam(value = "name", required = true) String name,
+                                                           @RequestParam(value = "description", defaultValue = "") String description,
+                                                           @RequestParam(value = "state", defaultValue = "") String state,
+                                                           @RequestParam(value = "city", defaultValue = "") String city,
+                                                           @RequestParam(value = "street", defaultValue = "") String street,
+                                                           @RequestParam(value = "zip", defaultValue = "") String zip) {
+        Address address = new Address();
+        address.setCity(city);
+        address.setState(state);
+        address.setStreet(street);
+        address.setZip(zip);
+
+        Organization objectOrg = new Organization();
+        objectOrg.setName(name);
+        objectOrg.setDescription(description);
+        objectOrg.setAddress(address);
+
+        Organization newOrgObj = organizationService.saveOrganization(objectOrg);
+        return new ResponseEntity<Organization>(newOrgObj, HttpStatus.OK);
+    }
+
+    /**
+     * Delete Organization*/
+    @RequestMapping(value = {"/{id}"}, method = RequestMethod.DELETE)
+    public ResponseEntity<Organization> deleteOrganization(@PathVariable int id) throws Exception {
+
+
+        Organization orgToDelete = organizationService.findById(id);
+        if(orgToDelete == null){
+            return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
+        }
+
+        Organization deletedOrg = null;
+        try {
+            deletedOrg = organizationService.deleteOrganizationbyId(id);
+        } catch (Exception e) {
+            return new ResponseEntity<Organization>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<Organization>(deletedOrg, HttpStatus.OK);
+    }
+
+    /**
+     * Update an Organization
+     */
+    @RequestMapping(value = {"/{id}"}, method = RequestMethod.POST)
+    public ResponseEntity<Organization> updateOrganization(@PathVariable("id") int id,
+                                                           @RequestParam(value = "name") String name,
+                                                           @RequestParam(value = "description", defaultValue = "") String description,
+                                                           @RequestParam(value = "state", defaultValue = "") String state,
+                                                           @RequestParam(value = "city", defaultValue = "") String city,
+                                                           @RequestParam(value = "street", defaultValue = "") String street,
+                                                           @RequestParam(value = "zip", defaultValue = "") String zip) {
+
+        if(name == null || name.isEmpty())
+            return new ResponseEntity<Organization>(HttpStatus.BAD_REQUEST);
+
+        // get the organization with the given id
+        Organization org = organizationService.findById(id);
+        if (org == null) {
+            return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
+        }
+        Address address = org.getAddress();
+        org.setName(name);
+
+        if (state != null && !state.isEmpty())
+            address.setState(state);
+
+        if (city != null && !city.isEmpty())
+            address.setCity(city);
+
+        if (zip != null && !zip.isEmpty())
+            address.setZip(zip);
+
+        if (street != null && !street.isEmpty())
+            address.setStreet(street);
+
+        if (description != null && !description.isEmpty())
+            org.setDescription(description);
+
+        Organization updatedOrg = organizationService.updateOrganization(org);
+        return new ResponseEntity<Organization>(updatedOrg, HttpStatus.OK);
+    }
+
 }

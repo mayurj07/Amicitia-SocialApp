@@ -16,4 +16,6 @@ public interface PersonDAO {
     public Person updatePersonInfo(Person person) throws EntityNotFound;
 
     public Person deletePerson(int personId) throws EntityNotFound;
+
+    public Boolean organizationExists(int orgId);
 }

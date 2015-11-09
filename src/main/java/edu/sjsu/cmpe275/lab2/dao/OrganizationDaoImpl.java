@@ -15,22 +15,20 @@ public class OrganizationDaoImpl extends AbstractDao<Integer, Organization> impl
 	public Organization saveOrganization(Organization org)
 	{	
 		persist(org);
-		
 		return org;
 	}
 	
-	public void deleteOrganizationById(int id)
-	{	Organization org = new Organization();
-		org.setId(id);
+	public Organization deleteOrganizationById(int id)
+	{
+		Organization org = findById(id);
 		delete(org);
+        return org;
 	}
 	
 	public Organization updateOrganization(Organization org)
-	{	
-		
+	{
 		update(org);
 		return org;
-		 
 	}
 	
 }

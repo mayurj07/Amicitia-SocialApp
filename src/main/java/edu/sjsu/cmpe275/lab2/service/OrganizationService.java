@@ -10,5 +10,5 @@ public interface OrganizationService {
 	
 	Organization updateOrganization(Organization org);
 	
-	void deleteOrganizationbyId(int id);
+	Organization deleteOrganizationbyId(int id) throws Exception;
 }
