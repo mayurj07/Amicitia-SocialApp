@@ -10,7 +10,7 @@ public interface FriendshipService {
 
     public void delete(Friendship friendship);
 
-    public Friendship search(Integer id1, Integer id2);
+    public Friendship checkIfFriends(Integer id1, Integer id2);
 
     public List<Integer> getAllFriends(int id);
 }

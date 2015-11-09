@@ -1,36 +1,35 @@
 package edu.sjsu.cmpe275.lab2.service;
 
 
+import edu.sjsu.cmpe275.lab2.model.Friendship;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import edu.sjsu.cmpe275.lab2.dao.FriendshipDAO;
 
 import java.util.List;
 
-public class FriendshipServiceImpl implements FriendshipService{
+@Service("friendshipService")
+@Transactional
+public class FriendshipServiceImpl implements FriendshipService {
 
     @Autowired
     private FriendshipDAO friendDao;
 
-    @Transactional
-    public void add(Frienship friend) {
+    public void add(Friendship friend) {
         friendDao.add(friend);
     }
 
-    @Transactional
-    public void delete(Frienship friend) {
+    public void delete(Friendship friend) {
         friendDao.delete(friend);
     }
 
-    @Transactional
-    public Frienship search(Integer id1, Integer id2) {
+    public Friendship checkIfFriends(Integer id1, Integer id2) {
         return friendDao.search(id1, id2);
     }
 
-    @Transactional
     public List<Integer> getAllFriends(int personId) {
         return friendDao.getAllFriends(personId);
     }
-
 
 }
