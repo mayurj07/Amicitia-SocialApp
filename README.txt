@@ -53,6 +53,11 @@ Maven must be installed.
 
 How to Run:
 
-1. $ mvn clean install
+```java
+1. $ mvn clean install.
 
-2. Run Tomcat server.
+2. Start Tomcat server.
+```
+
+
+
