@@ -167,10 +167,10 @@ public class PersonController {
 
 
 
-//            Organization orgObj = this.organizationService.findById(orgId);
-            		if(orgService==null) throw new OrganizationNotFoundException(" organization ");
+            Organization orgObj = orgService.findById(orgId);
+            		if(orgObj==null) throw new OrganizationNotFoundException(" organization ");
             else  {
-                        person.setOrg(org);
+                        person.setOrg(orgObj);
                     }
 
             Person updatedPerson = personService.updatePersonInfo(person);
