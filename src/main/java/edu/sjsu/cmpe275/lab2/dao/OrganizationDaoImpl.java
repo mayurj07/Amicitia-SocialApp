@@ -11,22 +11,12 @@ public class OrganizationDaoImpl extends AbstractDao<Integer, Organization> impl
 	public Organization findById(int id) {
 		return getByKey(id);
 	}
-
-
+	
 	public Organization saveOrganization(Organization org)
-	{	int id=0;
-		Organization objOrg=null;
-		Session session = (Session)getSession();
-		try{
-		session.save(org);
-		id=org.getId();
-		objOrg = getByKey(id);
-		}catch(Exception ex)
-		{
-			System.err.println(ex);
-		}
-				
-		return objOrg;
+	{	
+		persist(org);
+		
+		return org;
 	}
 	
 	public void deleteOrganizationById(int id)
@@ -36,15 +26,11 @@ public class OrganizationDaoImpl extends AbstractDao<Integer, Organization> impl
 	}
 	
 	public Organization updateOrganization(Organization org)
-	{
-		try{
+	{	
+		
 		update(org);
 		return org;
-		}catch(Exception ex)
-		{
-			System.err.println(ex);
-		}
-		return null; 
+		 
 	}
 	
 }

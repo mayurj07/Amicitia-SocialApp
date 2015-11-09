@@ -27,16 +27,7 @@ public class PersonDAOImpl extends AbstractDao<Integer, Person> implements Perso
     }
 
     public Person updatePersonInfo(Person updatedPerson) throws EntityNotFound {
-        /*Person person = personRepo.findOne((int) updatedPerson.getId());
-
-        if (person == null)
-            throw new EntityNotFound();
-
-        person.setFirstname(updatedPerson.getFirstname());
-        person.setLastname(updatedPerson.getLastname());
-        person.setEmail(updatedPerson.getEmail());
-        person.setDescription(updatedPerson.getDescription());*/
-
+        update(updatedPerson);
         return updatedPerson;
     }
 

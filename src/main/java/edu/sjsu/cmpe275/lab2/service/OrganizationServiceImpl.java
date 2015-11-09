@@ -29,27 +29,8 @@ public class OrganizationServiceImpl implements OrganizationService{
 	}
 	
 	public Organization updateOrganization(Organization orgn) {
-		Organization entity = organizationDao.findById(orgn.getId());
-		Address address  =new Address();
-		if(orgn.getAddress()!=null)
-		{
-			if(orgn.getAddress().getCity()!=null||orgn.getAddress().getCity().length()!=0)
-				address.setCity(orgn.getAddress().getCity());
-			if(orgn.getAddress().getState()!=null||orgn.getAddress().getState().length()!=0)
-				address.setState(orgn.getAddress().getState());
-			if(orgn.getAddress().getStreet()!=null||orgn.getAddress().getStreet().length()!=0)
-				address.setStreet(orgn.getAddress().getStreet());
-			if(orgn.getAddress().getZip()!=null||orgn.getAddress().getZip().length()!=0)
-				address.setZip(orgn.getAddress().getZip());
-		}
 		
-		if(entity!=null){
-			if(orgn.getName()==null||orgn.getName().length()==0)
-				entity.setName(orgn.getName());
-			entity.setDescription(orgn.getDescription());
-			entity.setAddress(address);
-		}
-		Organization orgRet = organizationDao.updateOrganization(entity);
+		Organization orgRet = organizationDao.updateOrganization(orgn);
 		return orgRet;
 	}
 	

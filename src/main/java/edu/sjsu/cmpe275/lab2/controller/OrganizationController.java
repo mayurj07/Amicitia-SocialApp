@@ -34,12 +34,12 @@ public class OrganizationController {
 	}
 	
 	@RequestMapping(value={"org"}, method=RequestMethod.POST)
-	public String createOrganization(@RequestParam("name") String name,
+	public String createOrganization(@RequestParam(value = "name",required=true) String name,
 									 @RequestParam(value = "description", defaultValue = "") String description,
-									 @RequestParam("state") String state,
-									 @RequestParam("city") String city,
-									 @RequestParam("street") String street,
-									 @RequestParam("zip") String zip,
+									 @RequestParam(value = "state",defaultValue = "") String state,
+									 @RequestParam(value= "city",defaultValue = "") String city,
+									 @RequestParam(value = "street", defaultValue = "") String street,
+									 @RequestParam(value = "zip", defaultValue = "") String zip,
 									 ModelMap model)
 	{	
 		Address address = new Address();
@@ -63,33 +63,45 @@ public class OrganizationController {
 	@RequestMapping(value = { "org/{id}" }, method = RequestMethod.DELETE)
 	public String deleteOrganization(@PathVariable int id) {
 		organizationService.deleteOrganizationbyId(id);
-		return "redirect:/list";
+		return "success";
 	}
 	
 	@RequestMapping(value={"org/{id}"},method=RequestMethod.POST)
 	public String updateOrganization(@PathVariable("id") int id,
-			 @RequestParam("name") String name,
-			 @RequestParam("description") String description,
-			 @RequestParam("state") String state,
-			 @RequestParam("city") String city,
-			 @RequestParam("street") String street,
-			 @RequestParam("zip") String zip,
+			 @RequestParam(value = "name",required=true) String name,
+			 @RequestParam(value = "description", defaultValue = "") String description,
+			 @RequestParam(value = "state",defaultValue = "") String state,
+			 @RequestParam(value= "city",defaultValue = "") String city,
+			 @RequestParam(value = "street", defaultValue = "") String street,
+			 @RequestParam(value = "zip", defaultValue = "") String zip,
 			 ModelMap model)
 	{	
-		Address address = new Address();
-		address.setCity(city);
-		address.setState(state);
-		address.setStreet(street);
-		address.setZip(zip);
-		System.out.println("::: in controller update:: "+address.getState()+" "+address.getCity());
+		// get the organization with the given id
+		Organization org  = organizationService.findById(id);
+		if(org==null)
+			System.out.println(" no record with this id found ");
+		else
+		{
+			System.out.println(" setting the update records");
+			Address address = org.getAddress();
+			org.setName(name);
+			if(state != null && !state.isEmpty())
+				address.setState(state);
+			if(city != null && !city.isEmpty())
+				address.setCity(city);
+			if(zip != null && !zip.isEmpty())
+				address.setZip(zip);
+			if(street != null && !street.isEmpty())
+				address.setStreet(street);
+			if(description != null && !description.isEmpty())
+				org.setDescription(description);
+			
 		
-		Organization objectOrg = new Organization();
-		objectOrg.setName(name);
-		objectOrg.setDescription(description);
-		objectOrg.setAddress(address);
-		
-		organizationService.updateOrganization(objectOrg);
+		organizationService.updateOrganization(org);
+		System.out.println(" ::::::::organization name is :::::"+org.getName());
+		}
 		return "success";
+		
 	}
 	
 	

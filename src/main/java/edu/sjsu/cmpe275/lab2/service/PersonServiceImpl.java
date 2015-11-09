@@ -31,8 +31,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public Person updatePersonInfo(Person updatedPerson) throws EntityNotFound {
-        Person entity = personDao.getPersonInfo((int) updatedPerson.getId());
-        Address address = new Address();
+        //Person entity = personDao.getPersonInfo((int) updatedPerson.getId());
+        /*Address address = new Address();
 
         if (updatedPerson.getAddress() != null) {
             if (updatedPerson.getAddress().getCity() != null || updatedPerson.getAddress().getCity().length() != 0)
@@ -50,8 +50,8 @@ public class PersonServiceImpl implements PersonService {
                 entity.setFirstname(updatedPerson.getFirstname());
             entity.setDescription(updatedPerson.getDescription());
             entity.setAddress(address);
-        }
-        Person perRet = personDao.updatePersonInfo(entity);
+        }*/
+        Person perRet = personDao.updatePersonInfo(updatedPerson);
         return perRet;
     }
 

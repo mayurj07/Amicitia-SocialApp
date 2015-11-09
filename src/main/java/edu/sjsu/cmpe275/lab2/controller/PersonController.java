@@ -81,11 +81,11 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/{id}",
-                    method = RequestMethod.GET,
-                    produces = {"text/html"})
+            method = RequestMethod.GET,
+            produces = {"text/html"})
     public String getPersonHTML(@PathVariable(value = "id") int personId, ModelMap model) throws EntityNotFound {
         Person person = personService.getPersonInfo(personId);
-        model.addAttribute("person",person);
+        model.addAttribute("person", person);
         return "person";
     }
 
@@ -93,91 +93,72 @@ public class PersonController {
             method = RequestMethod.GET,
             produces = {"application/json", "application/xml"})
     public ResponseEntity<Person> getPerson(@PathVariable(value = "id") int personId) throws EntityNotFound {
-        try{
+        try {
             Person person = personService.getPersonInfo(personId);
-            if(person != null)
+            if (person != null)
                 return new ResponseEntity<Person>(person, HttpStatus.OK);
             else
                 return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
         }
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public String updatePersonInfo(
-            @PathVariable(value = "id") int personId,
+    @RequestMapping(value = "/{personId}", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Person> updatePerson(
+            @PathVariable(value = "personId") int personId,
+            @RequestParam(value = "email", required = true) String email,
             @RequestParam(value = "firstname", defaultValue = "") String firstname,
             @RequestParam(value = "lastname", defaultValue = "") String lastname,
-            @RequestParam(value = "email", required = true) String email,
             @RequestParam(value = "description", defaultValue = "") String description,
             @RequestParam(value = "street", defaultValue = "") String street,
             @RequestParam(value = "city", defaultValue = "") String city,
             @RequestParam(value = "state", defaultValue = "") String state,
-            @RequestParam(value = "zip", defaultValue = "") String zip,
-            @RequestParam(value = "id", defaultValue = "") int orgId,
-            ModelMap model) throws Exception {
+            @RequestParam(value = "zip", defaultValue = "") String zip) throws Exception {
 
-            System.out.println("personId:    " +personId);
-            Person person = personService.getPersonInfo(personId);
-            Organization org = new Organization();
+        System.out.println("personId:    " + personId);
+        System.out.println("first:  "+ firstname);
+        Person person = personService.getPersonInfo(personId);
 
 
-
-        if(person == null )
-             		{
-                        throw new Exception("Unable to find Person Id....");
-             		}
-
-       /* if (firstname == null || "".equalsIgnoreCase(firstname)
-                || lastname == null || "".equalsIgnoreCase(lastname)
-                || email == null || "".equalsIgnoreCase(email) || description == null || "".equalsIgnoreCase(description)
-                || street == null || "".equalsIgnoreCase(street) || city == null || "".equalsIgnoreCase(city)
-                || state == null || "".equalsIgnoreCase(state) || zip == null || "".equalsIgnoreCase(zip)) {
-
-            return person;
-        }*/
-//        Person per = personService.getPersonInfo(personId);
-//        Person entity = personDao.getPersonInfo((int) updatedPerson.getId());
-//          Person per = personService.getPersonInfo((int) updatePersonInfo)
-
-
-         else {
-
-
-            Address address = person.getAddress();
-            person.setEmail(email);
-            if (firstname != null && "".equalsIgnoreCase(firstname))
-                person.setFirstname(firstname);
-            if (lastname != null && "".equalsIgnoreCase(lastname))
-                person.setLastname(lastname);
-            if (email != null && "".equalsIgnoreCase(email))
-                person.setEmail(email);
-            if (description != null && "".equalsIgnoreCase(description))
-                person.setDescription(description);
-            if (street != null && "".equalsIgnoreCase(street))
-                address.setStreet(street);
-            if (city != null && "".equalsIgnoreCase(city))
-                address.setCity(city);
-            if (state != null && "".equalsIgnoreCase(state))
-                address.setState(state);
-            if (zip != null && "".equalsIgnoreCase(zip))
-                address.setZip(zip);
-
-
-
-            Organization orgObj = orgService.findById(orgId);
-            		if(orgObj==null) throw new OrganizationNotFoundException(" organization ");
-            else  {
-                        person.setOrg(orgObj);
-                    }
-
-            Person updatedPerson = personService.updatePersonInfo(person);
-            model.addAttribute("person", updatedPerson);
+        if (person == null) {
+            return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
         }
-        return "person";
+
+        Address address = person.getAddress();
+        person.setEmail(email);
+//        if (firstname != null || "".equalsIgnoreCase(firstname))
+            person.setFirstname(firstname);
+
+        if (lastname != null || "".equalsIgnoreCase(lastname))
+            person.setLastname(lastname);
+        if (description != null || "".equalsIgnoreCase(description))
+            person.setDescription(description);
+        if (street != null || "".equalsIgnoreCase(street))
+            address.setStreet(street);
+        if (city != null || "".equalsIgnoreCase(city))
+            address.setCity(city);
+        if (state != null || "".equalsIgnoreCase(state))
+            address.setState(state);
+        if (zip != null || "".equalsIgnoreCase(zip))
+            address.setZip(zip);
+
+
+        int orgId = 2;
+        Organization orgObj = orgService.findById(orgId);
+        if (orgObj == null) {
+            return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
+        } else {
+            person.setOrg(orgObj);
+        }
+
+        Person updatedPerson = personService.updatePersonInfo(person);
+//            model.addAttribute("person", updatedPerson);
+//        return "person";
+        return new ResponseEntity<Person>(updatedPerson, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Person deletePerson(@RequestParam(value = "id") int personId) throws EntityNotFound {
