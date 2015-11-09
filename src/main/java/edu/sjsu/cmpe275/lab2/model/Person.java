@@ -66,6 +66,7 @@ public class Person {
      *
      * @return
      */
+    @XmlElement(name = "firstname")
     public String getFirstname() {
         return firstname;
     }
@@ -84,6 +85,7 @@ public class Person {
      *
      * @return
      */
+    @XmlElement(name = "lastname")
     public String getLastname() {
         return lastname;
     }
@@ -102,6 +104,7 @@ public class Person {
      *
      * @return
      */
+    @XmlElement(name = "email")
     public String getEmail() {
         return email;
     }
@@ -120,6 +123,7 @@ public class Person {
      *
      * @return
      */
+    @XmlElement(name = "description")
     public String getDescription() {
         return description;
     }
@@ -138,6 +142,7 @@ public class Person {
      *
      * @return
      */
+    @XmlElement(name = "address")
     public Address getAddress() {
         return address;
     }
@@ -157,6 +162,7 @@ public class Person {
      *
      * @return
      */
+    @XmlElement(name = "org")
     public Organization getOrg() {
         return org;
     }

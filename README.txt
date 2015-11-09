@@ -14,10 +14,26 @@ How the project is build:
 1) Select spring maven project.
 2) Add all the maven dependencies (refer this pom.xml)
 
-How to run this app:
 
+How teh application works:
+1)PersonController class contains all the APIs related to person. It contains API for -
+              Create Person
+              Delete Person
+              Update Person Info
+              Get Person Info
+2) All the APIs in PersonController call menthods of PersonService, Which further calls methods of PersonDAO.
+3) OrganizationController has  all the APIs related to organization data. It contains following APIs -
+              Create Organization
+              Delete Organization
+              Update Organization Info
+              Get Organization Info
+4)All the methods in OrganizationController call methods of OrganizationService, which further calls methods of OrganizationDAO.
+5)FriendshipController has  all the APIs related to organization data. It contains following APIs -
+              Add Friendship
+              Remove Friendship
+ 6)All the methods in FriendshipController call methods of FriendshipService, which further calls methods of FriendshipDAO.
 
--------package: edu.sjsu.cmpe275.lab1;
+-------package: edu.sjsu.cmpe275.lab2;
 
 
 

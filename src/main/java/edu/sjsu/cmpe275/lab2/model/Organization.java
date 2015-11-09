@@ -7,8 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
-
+@XmlSeeAlso(value = { Address.class})
+@XmlRootElement(name ="address")
 @Entity
 @Table(name="organization")
 public class Organization {
@@ -31,6 +35,7 @@ public class Organization {
 	 *
 	 * @return
      */
+    @XmlElement(name = "id")
 	public int getId() {
 		return id;
 	}
@@ -40,6 +45,7 @@ public class Organization {
 	 *
 	 * @return
      */
+    @XmlElement(name = "address")
 	public Address getAddress() {
 		return address;
 	}
@@ -67,6 +73,7 @@ public class Organization {
 	 *
 	 * @return
      */
+    @XmlElement(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -85,6 +92,7 @@ public class Organization {
 	 *
 	 * @return
      */
+    @XmlElement(name = "description")
 	public String getDescription() {
 		return description;
 	}

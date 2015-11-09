@@ -2,6 +2,7 @@ package edu.sjsu.cmpe275.lab2.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.xml.bind.annotation.XmlElement;
 
 @Embeddable
 public class Address {
@@ -23,6 +24,7 @@ public class Address {
 	 *
 	 * @return
      */
+    @XmlElement(name = "street")
 	public String getStreet() {
 		return street;
 	}
@@ -41,6 +43,7 @@ public class Address {
      *
      * @return
      */
+    @XmlElement(name = "city")
 	public String getCity() {
 		return city;
 	}
@@ -59,6 +62,7 @@ public class Address {
      *
      * @return
      */
+    @XmlElement(name = "state")
 	public String getState() {
 		return state;
 	}
@@ -77,6 +81,7 @@ public class Address {
      *
      * @return
      */
+    @XmlElement(name = "zip")
 	public String getZip() {
 		return zip;
 	}
