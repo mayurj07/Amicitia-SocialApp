@@ -6,9 +6,10 @@
 
 Team 22 :
 
-#####Member1 : Mayur Jain     | 009991059 | mayurj07@gmail.com
-#####Member2 : Akanksha Singh | 010030839 | akanksha.singh@sjsu.edu,
-#####Member3 : Harkirat Singh | 010027823 | harkirat.singh@sjsu.edu
+#####Member1 : Mayur Jain     | mayurj07@gmail.com
+#####Member2 : Akanksha Singh | akanksha.singh@sjsu.edu
+#####Member3 : Harkirat Singh | harkirat.singh@sjsu.edu
+#####Member4 : Surbhi Garg    | garg.surbhi90@gmail.com
 
 Note: This assignment was created using IntelliJ IDEA IDE.
 
