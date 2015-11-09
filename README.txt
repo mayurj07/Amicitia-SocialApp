@@ -1,5 +1,7 @@
 ** README **
 
+A set of REST APIs to manage entities and relationships in a social app.
+
 CMPE 275 Lab - 2
 
 Team 22 :
