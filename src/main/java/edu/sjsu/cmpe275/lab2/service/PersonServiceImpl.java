@@ -56,8 +56,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public Person deletePerson(int id) {
-        personDao.deletePerson(id);
-        return null;
+        Person person = personDao.deletePerson(id);
+        return person;
 
     }
 

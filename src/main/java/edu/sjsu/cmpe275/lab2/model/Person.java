@@ -176,13 +176,13 @@ public class Person {
         this.org = org;
     }
 
-    public List<Integer> getFriendsDetails() {
-        return friends;
-    }
+//    public List<Integer> getFriendsDetails() {
+//        return friends;
+//    }
 
-    public void setFriendsDetails(List<Integer> friends) {
-        this.friends = friends;
-    }
+//    public void setFriendsDetails(List<Integer> friends) {
+//        this.friends = friends;
+//    }
 
     public List<Integer> getFriends() {
         return friends;

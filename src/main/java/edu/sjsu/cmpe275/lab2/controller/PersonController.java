@@ -1,20 +1,15 @@
 package edu.sjsu.cmpe275.lab2.controller;
 
 
-import com.google.gson.Gson;
-import edu.sjsu.cmpe275.lab2.dao.OrganizationDao;
 import edu.sjsu.cmpe275.lab2.exception.EntityNotFound;
-import edu.sjsu.cmpe275.lab2.exception.OrganizationNotFoundException;
 import edu.sjsu.cmpe275.lab2.model.*;
 import edu.sjsu.cmpe275.lab2.model.Organization;
 import edu.sjsu.cmpe275.lab2.service.OrganizationService;
 import edu.sjsu.cmpe275.lab2.service.PersonService;
-import edu.sjsu.cmpe275.lab2.dao.PersonDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -176,22 +171,22 @@ public class PersonController {
         Address address = person.getAddress();
         person.setEmail(email);
 
-        if (firstname != null || "".equalsIgnoreCase(firstname))
+        if (firstname != null || !"".equalsIgnoreCase(firstname))
             person.setFirstname(firstname);
-        if (lastname != null || "".equalsIgnoreCase(lastname))
+        if (lastname != null || !"".equalsIgnoreCase(lastname))
             person.setLastname(lastname);
-        if (description != null || "".equalsIgnoreCase(description))
+        if (description != null || !"".equalsIgnoreCase(description))
             person.setDescription(description);
-        if (street != null || "".equalsIgnoreCase(street))
+        if (street != null || !"".equalsIgnoreCase(street))
             address.setStreet(street);
-        if (city != null || "".equalsIgnoreCase(city))
+        if (city != null || !"".equalsIgnoreCase(city))
             address.setCity(city);
-        if (state != null || "".equalsIgnoreCase(state))
+        if (state != null || !"".equalsIgnoreCase(state))
             address.setState(state);
-        if (zip != null || "".equalsIgnoreCase(zip))
+        if (zip != null || !"".equalsIgnoreCase(zip))
             address.setZip(zip);
 
-        if (orgid != null || "".equalsIgnoreCase(orgid)) {
+        if (orgid != null || !"".equalsIgnoreCase(orgid)) {
             Organization orgObj = orgService.findById(Integer.parseInt(orgid));
             if (orgObj == null) {
                 return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
@@ -212,8 +207,8 @@ public class PersonController {
      * @return
      * @throws EntityNotFound
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Person> deletePerson(@RequestParam(value = "id") int personId) throws EntityNotFound {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    public ResponseEntity<Person> deletePerson(@PathVariable(value = "id") int personId) throws EntityNotFound {
 
         Person personToDelete = personService.getPersonInfo(personId);
         if (personToDelete == null)

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,9 +24,7 @@ public class FriendshipController {
     @Autowired
     FriendshipService friendshipService;
 
-    @RequestMapping(value = "/{person1Id}/{person2Id}",
-                    method = RequestMethod.PUT,
-                    produces = "application/json")
+    @RequestMapping(value = "/{person1Id}/{person2Id}", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<Object> makeFriends(
             @PathVariable(value = "person1Id") Integer person1Id,
             @PathVariable(value = "person2Id") Integer person2Id) {
@@ -56,7 +53,7 @@ public class FriendshipController {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return new ResponseEntity<Object>("Exception Occured", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<Object>("Exception Occurred", HttpStatus.BAD_REQUEST);
             }
         } else {
             return new ResponseEntity<Object>("Person cannot be friends with himself", HttpStatus.BAD_REQUEST);
@@ -65,7 +62,7 @@ public class FriendshipController {
 
 
     @RequestMapping(value = "/{person1Id}/{person2Id}", method = RequestMethod.DELETE, produces = "application/json")
-    public ResponseEntity<Object> deleteFriend(Model model, @PathVariable Integer person1Id, @PathVariable Integer person2Id) {
+    public ResponseEntity<Object> deleteFriend(@PathVariable Integer person1Id, @PathVariable Integer person2Id) {
         if (person1Id != person2Id) {
             try {
 
@@ -88,10 +85,10 @@ public class FriendshipController {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                return new ResponseEntity<Object>("Exception Occured", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<Object>("Exception Occurred", HttpStatus.BAD_REQUEST);
             }
         } else {
-            return new ResponseEntity<Object>("Person cannot unfriend with himself", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>("Person cannot unfriend himself", HttpStatus.BAD_REQUEST);
         }
     }
 }
